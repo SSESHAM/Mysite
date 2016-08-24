@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+<style>
+#ccwidget{
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	-webkit-box-shadow: 0px 0px 8px #000000;
+	-moz-box-shadow: 0px 0px 8px #000000;
+	background-color: #00365B; /* this is the main color of the widget */
+	padding: 0px 10px;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+	font-size: 12pt;
+	color: #FFF;
+	text-align: center;
+	width:300px;
+	height:270px;
+	}
+.button{
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	-webkit-box-shadow: 0px 0px 8px #000000;
+	-moz-box-shadow: 0px 0px 8px #000000;
+	background-color: #FFF;
+	padding: 2px,2px;
+	color:#136700;
+	margin:-5px 5px;
+	text-align: center;
+	text-decoration: none;
+
+}
+#ccwidget a:link {
+    text-decoration: none;
+    color:#50a1d2;
+}
+
+#ccwidget a:visited {
+    text-decoration: none;
+    color:#50a1d2;
+}
+
+#ccwidget a:hover {
+    text-decoration: none;
+    color:#165270;
+}
+
+#ccwidget a:active {
+    text-decoration: none;
+    color:#7e9faf;
+}
+#cc_occ_name {
+    height:80px;
+}
+#cc_occ_name h3{
+   font-size: 18pt;
+   padding:10px 0px;
+    position: relative;
+    top: 50%;
+    margin-bottom: 10px;
+    -ms-transform: translateY(-40%);
+    -moz-transform: translateY(-40%);
+    -webkit-transform: translateY(-40%);
+    transform: translateY(-40%);
+    overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+</style>
+
+<head>
+
+</head>
+<body>
+<div id="ccwidget"></div>
+
+<script>
+(function(d, s, id){
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {return;}
+    js = d.createElement(s); js.id = id;
+    js.src = "http://api.emsicareercoach.com/js/sdk/packets.js";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'cc-packets-sdk'));
+
+function careerCoachInit(){
+	var ccwidget = document.getElementById("ccwidget");
+    CC_SDK.init({
+        baseUrl: "http://easternflorida.emsicareercoach.com/", //change URL
+        password: "c2d3363dfa4e7edf5a474a4803403393f2f26cc32eb5632007bc63f15161a6ae" //put in keycode
+    }).occupationCycle({
+		courseId:757712, // could also be courseCode. refer to the course packets docs for more details
+
+		interval: 5000, // optional; ms between each occupation cycle
+		callback: function(occupation){ // when callback is provided, containerid does nothing
+
+			var name = "<div id='cc_occ_name'><h3>"+occupation.Name+"</h3></div>",
+				description = "<p>"+occupation.Description+"</p>",
+				text_a = "<p>in your area, people working in this occupation typically make</p>",
+				text_b = "<p>Find out more at</p>",
+				button = "<div class='button'><a href='http://easternflorida.emsicareercoach.com/'><h2>Career Coach</h2></a>", //change URL
+				wage = "<p>"+"$"+occupation[50].Hourly+"/hr"+"</p>";
+
+			ccwidget.innerHTML = name+text_a+wage+text_b+button;
+		}
+    });
+}
+
+
+</script>
+</body>
