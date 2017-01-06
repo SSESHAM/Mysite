@@ -1,0 +1,67 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using Sitecore.Data;
+@using Sitecore.Data.Fields;
+@using Sitecore.Data.Items;
+@using Sitecore.Collections;
+@model RenderingModel
+
+@{
+    Database currentDB;
+
+    currentDB = Sitecore.Context.Database;
+
+    //Database webDB = Sitecore.Configuration.Factory.GetDatabase("web");
+
+    Item myItem = currentDB.Items["/sitecore/content/honda/QuickLinks"];
+
+}
+
+@{
+    if ((myItem).HasChildren)
+    {
+
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 box main-box quickLinks">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 nopadding box-title">
+                Quick Links
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 nopadding box-content">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 box-content-links">
+
+                    @{
+        foreach (Item child in myItem.GetChildren().OrderByDescending(a => a.Fields["__Updated"].Value))
+        {
+            <span>
+                @{
+            string x = string.Empty;
+
+
+            Sitecore.Data.Fields.LinkField linkfField = child.Fields["URL"];
+
+            dynamic dURLInfo = new
+            {
+                URL = linkfField.GetFriendlyUrl(),
+                Title = linkfField.Title,
+                Target = linkfField.Target,
+                Text = linkfField.Text
+            };
+
+
+                }
+
+                <a href="@dURLInfo.URL" target="dURLInfo.Target" title="@dURLInfo.Title">@dURLInfo.Text</a>
+            </span><br />
+        }
+
+
+
+                    }
+                </div>
+
+            </div>
+        </div>
+
+    }
+}
+
+
